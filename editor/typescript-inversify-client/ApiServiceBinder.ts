@@ -1,0 +1,73 @@
+import {interfaces} from "inversify";
+
+import { AssetsService } from './api/assets.service';
+import { BlacklistService } from './api/blacklist.service';
+import { CitiesService } from './api/cities.service';
+import { CoachesService } from './api/coaches.service';
+import { CountriesService } from './api/countries.service';
+import { EventIncidentsService } from './api/eventIncidents.service';
+import { EventPlayerTypeService } from './api/eventPlayerType.service';
+import { EventStatusService } from './api/eventStatus.service';
+import { EventsService } from './api/events.service';
+import { KnockoutSchemeService } from './api/knockoutScheme.service';
+import { LanguagesService } from './api/languages.service';
+import { LineupsService } from './api/lineups.service';
+import { MappingsService } from './api/mappings.service';
+import { MatchEventsService } from './api/matchEvents.service';
+import { MatchesService } from './api/matches.service';
+import { OddsService } from './api/odds.service';
+import { PlayerStatisticService } from './api/playerStatistic.service';
+import { PlayersService } from './api/players.service';
+import { PresidentsService } from './api/presidents.service';
+import { ProviderMappingsService } from './api/providerMappings.service';
+import { RefereesService } from './api/referees.service';
+import { RoundsService } from './api/rounds.service';
+import { SeasonService } from './api/season.service';
+import { StagesService } from './api/stages.service';
+import { StandingRuleService } from './api/standingRule.service';
+import { StandingsService } from './api/standings.service';
+import { TeamSquadService } from './api/teamSquad.service';
+import { TeamStatsService } from './api/teamStats.service';
+import { TeamsService } from './api/teams.service';
+import { TournamentGroupsService } from './api/tournamentGroups.service';
+import { TournamentsService } from './api/tournaments.service';
+import { TranslationsService } from './api/translations.service';
+import { VenuesService } from './api/venues.service';
+
+export class ApiServiceBinder {
+    public static with(container: interfaces.Container) {
+        container.bind<AssetsService>("AssetsService").to(AssetsService).inSingletonScope();
+        container.bind<BlacklistService>("BlacklistService").to(BlacklistService).inSingletonScope();
+        container.bind<CitiesService>("CitiesService").to(CitiesService).inSingletonScope();
+        container.bind<CoachesService>("CoachesService").to(CoachesService).inSingletonScope();
+        container.bind<CountriesService>("CountriesService").to(CountriesService).inSingletonScope();
+        container.bind<EventIncidentsService>("EventIncidentsService").to(EventIncidentsService).inSingletonScope();
+        container.bind<EventPlayerTypeService>("EventPlayerTypeService").to(EventPlayerTypeService).inSingletonScope();
+        container.bind<EventStatusService>("EventStatusService").to(EventStatusService).inSingletonScope();
+        container.bind<EventsService>("EventsService").to(EventsService).inSingletonScope();
+        container.bind<KnockoutSchemeService>("KnockoutSchemeService").to(KnockoutSchemeService).inSingletonScope();
+        container.bind<LanguagesService>("LanguagesService").to(LanguagesService).inSingletonScope();
+        container.bind<LineupsService>("LineupsService").to(LineupsService).inSingletonScope();
+        container.bind<MappingsService>("MappingsService").to(MappingsService).inSingletonScope();
+        container.bind<MatchEventsService>("MatchEventsService").to(MatchEventsService).inSingletonScope();
+        container.bind<MatchesService>("MatchesService").to(MatchesService).inSingletonScope();
+        container.bind<OddsService>("OddsService").to(OddsService).inSingletonScope();
+        container.bind<PlayerStatisticService>("PlayerStatisticService").to(PlayerStatisticService).inSingletonScope();
+        container.bind<PlayersService>("PlayersService").to(PlayersService).inSingletonScope();
+        container.bind<PresidentsService>("PresidentsService").to(PresidentsService).inSingletonScope();
+        container.bind<ProviderMappingsService>("ProviderMappingsService").to(ProviderMappingsService).inSingletonScope();
+        container.bind<RefereesService>("RefereesService").to(RefereesService).inSingletonScope();
+        container.bind<RoundsService>("RoundsService").to(RoundsService).inSingletonScope();
+        container.bind<SeasonService>("SeasonService").to(SeasonService).inSingletonScope();
+        container.bind<StagesService>("StagesService").to(StagesService).inSingletonScope();
+        container.bind<StandingRuleService>("StandingRuleService").to(StandingRuleService).inSingletonScope();
+        container.bind<StandingsService>("StandingsService").to(StandingsService).inSingletonScope();
+        container.bind<TeamSquadService>("TeamSquadService").to(TeamSquadService).inSingletonScope();
+        container.bind<TeamStatsService>("TeamStatsService").to(TeamStatsService).inSingletonScope();
+        container.bind<TeamsService>("TeamsService").to(TeamsService).inSingletonScope();
+        container.bind<TournamentGroupsService>("TournamentGroupsService").to(TournamentGroupsService).inSingletonScope();
+        container.bind<TournamentsService>("TournamentsService").to(TournamentsService).inSingletonScope();
+        container.bind<TranslationsService>("TranslationsService").to(TranslationsService).inSingletonScope();
+        container.bind<VenuesService>("VenuesService").to(VenuesService).inSingletonScope();
+    }
+}
