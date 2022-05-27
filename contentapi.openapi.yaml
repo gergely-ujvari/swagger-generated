@@ -1,0 +1,5637 @@
+openapi: 3.0.1
+info:
+  title: Content-API
+  description: SMP Content-API
+  version: 1.0.0
+servers:
+  - url: "https://content.api.sportal365.com"
+  - url: "https://contentapi.sandbox.g.sportal365.com"
+
+components:
+  securitySchemes:
+    oAuth2:
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        password:
+          tokenUrl: /oauth/token
+          scopes: {}
+    Project:
+      type: apiKey
+      in: header
+      name: Project
+      description: Project context
+  schemas:
+
+    ArticlesCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ArticleResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    ArticleTypesResponse:
+        type: object
+        nullable: true
+        description: Article Type
+        properties:
+            id:
+                readOnly: true
+                type: integer
+            name:
+                readOnly: true
+                type: string
+
+    TagsCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagsResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    BannersCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/BannersResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    ListsCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListsResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    VideosCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    ImagesCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImageResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    CategoriesCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    GalleriesCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    AuthorsCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    RegionsCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/RegionResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    ChannelsCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/ChannelResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    StatusesCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/StatusResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    TypesCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/TypeResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    OriginsCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/OriginResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    CommentPoliciesCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/CommentPolicyResponse"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    Meta:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+            count:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            total_pages:
+              type: integer
+            links:
+              type: object
+              properties:
+                next:
+                  type: string
+                previous:
+                  type: string
+
+    ActionLogsCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActionLogsResponse"
+        meta:
+          $ref: "#/components/schemas/Meta"
+
+    ActionLogsResponse:
+      type: object
+      properties:
+        action:
+          type: string
+        actor:
+          type: object
+          properties:
+              id:
+                  type: string
+              name:
+                  type: string
+              type:
+                  type: string
+        content:
+          type: object
+          properties:
+              id:
+                  type: string
+              name:
+                  type: string
+              type:
+                  type: string
+        changed:
+          type: array
+          items:
+              type: string
+        project:
+          type: string
+        action_time:
+          type: string
+
+    TagsRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        previous_id:
+          type: string
+          nullable: true
+          description: Used to achieve ordering of tags. The current tag will be placed after the element with previous_id. Only ordered tags can have their order changed.
+        order_type:
+          type: string
+          enum:
+              - ordered
+              - unordered
+          description: Sets the order type. Ordered tags can have their order changed. Unordered tags have their position locked.
+
+    TagsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        weight:
+          type: string
+          description: Calculated place in the listing. Can be controlled by setting previous_id property in requests.
+        order_type:
+          type: string
+          enum:
+              - ordered
+              - unordered
+
+    BannersRequest:
+        type: object
+        properties:
+            id:
+                type: string
+            title:
+                type: string
+            code:
+                type: string
+                description: HTML code of the banner.
+            is_preferred:
+                type: boolean
+            type:
+                type: string
+                nullable: true
+                description: Valid slug of a type for this content type
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the banner was updated.
+
+    BannersResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            title:
+                type: string
+            code:
+                type: string
+                description: HTML code of the banner.
+            is_preferred:
+                type: boolean
+            type:
+                type: string
+                nullable: true
+                description: Valid slug of a type for this content type
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the banner was updated.
+
+    RegionRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the region in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this region is one of the defaults for the project
+            description:
+                type: string
+                nullable: true
+
+    RegionResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the region in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this region is one of the defaults for the project
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the banner was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    ChannelRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the channel in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this channel is one of the defaults for the project
+            description:
+                type: string
+                nullable: true
+
+    ChannelResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the channel in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this channel is one of the defaults for the project
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the banner was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    StatusRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the status in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this status is the default for this content type
+            description:
+                type: string
+                nullable: true
+
+    StatusResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the status in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this status is the default for this content type
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the status was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    TypeRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the type in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this type is the default for this content type
+            description:
+                type: string
+                nullable: true
+
+    TypeResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the type in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this type is the default for this content type
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the type was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    OriginRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the origin in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this origin is the default for this content type
+            description:
+                type: string
+                nullable: true
+
+    OriginResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the origin in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this origin is the default for this content type
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the origin was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    CommentPolicyRequest:
+        type: object
+        properties:
+            slug:
+                type: string
+                description: Alias for the comment policy in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this comment policy is the default for this content type
+            description:
+                type: string
+                nullable: true
+
+    CommentPolicyResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            slug:
+                type: string
+                description: Alias for the comment policy in slug format
+            name:
+                type: string
+            default:
+                type: boolean
+                description: Flag if this comment policy is the default for this content type
+            description:
+                type: string
+                nullable: true
+            created_at:
+                type: string
+                description: System field for the creation date and time of the content.
+            updated_at:
+                type: string
+                description: The last time the comment policy was updated.
+            created_by:
+                $ref: "#/components/schemas/CreatorPartialResponse"
+
+    ListsRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        slug:
+          type: string
+          description: should be unique
+          nullable: true
+        image:
+          type: string
+          description: base64 encoded image
+        configuration:
+          type: object
+          description: Configuration object. No schema restrictions.
+        previous_id:
+          type: string
+          description: Used for ordering. Leave null to put on top.
+          nullable: true
+        locked_positions:
+          type: array
+          description: Zero-indexed indexed item positions that are considered locked. If being changed, request must also include items property.
+          items:
+            type: integer
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+                enum:
+                  - article
+                  - video
+                  - gallery
+              meta:
+                type: object
+                description: No schema restriction should be used for overiding properties
+              weight:
+                type: integer
+                nullable: true
+                description: Used for ordering in ascending order
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        language:
+          type: string
+          description: Language of the resource. Required if the project is multi-lingual, optional otherwise. Has to be project supported language.
+
+    ListsUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        slug:
+          type: string
+          description: should be unique
+          nullable: true
+        image:
+          type: string
+          description: base64 encoded image
+        configuration:
+          type: object
+          description: Configuration object. No schema restrictions.
+        previous_id:
+          type: string
+          description: Used for ordering. Leave null to put on top.
+          nullable: true
+        locked_positions:
+          type: array
+          description: Zero-indexed indexed item positions that are considered locked. If being changed, request must also include items property.
+          items:
+            type: integer
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+                enum:
+                  - article
+                  - video
+                  - gallery
+              meta:
+                type: object
+                description: No schema restriction should be used for overiding properties
+              weight:
+                type: integer
+                nullable: true
+                description: Used for ordering in ascending order
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+
+    ListsItem:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ARTICLE
+            - VIDEO
+            - GALLERY
+        data:
+          type: object
+          description: Related object
+        meta:
+          type: object
+          description: No schema restriction should be used for overiding properties
+        weight:
+          type: integer
+          nullable: true
+          description: Used for ordering in ascending order
+
+
+    ListsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        slug:
+          type: string
+          description: should be unique
+          nullable: true
+        image:
+          type: string
+          description: base64 encoded image
+        weight:
+          type: string
+          description: Calculated place in the listing. Can be controlled by setting previous_id property in requests.
+        configuration:
+          type: object
+          description: Configuration object. No schema restrictions.
+        locked_positions:
+          type: array
+          description: Zero-indexed indexed item positions that are considered locked.
+          items:
+            type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ListsItem"
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        language:
+          type: string
+          description: Language of the resource
+
+    ArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+          nullable: true
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+          nullable: true
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the \"Blocky\" component from the CMS
+        category_id:
+          type: string
+        comment_policy_id:
+          type: integer
+          nullable: true
+          description: ID of a valid comment policy for this content type
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+          type: string
+          nullable: true
+          description: Slug of a valid status for this content type
+        type:
+          type: string
+          nullable: true
+          description: Valid slug of a type for this content type
+        origin_id:
+          type: integer
+          nullable: true
+          description: ID of a valid origin for this content type
+        live:
+          type: boolean
+        important:
+          type: boolean
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        language:
+          type: string
+          description: Language of the resource. Required if the project is multi-lingual, optional otherwise. Has to be project supported language.
+        translation_group_id:
+            nullable: true
+            type: string
+            description: The ID of an existing translation group
+
+    ArticleUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+          nullable: true
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+          nullable: true
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the \"Blocky\" component from the CMS
+        category_id:
+          type: string
+        comment_policy_id:
+          type: integer
+          nullable: true
+          description: ID of a valid comment policy for this content type
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+          type: string
+          nullable: true
+          description: Slug of a valid status for this content type
+        type:
+          type: string
+          nullable: true
+          description: Valid slug of a type for this content type
+        origin_id:
+          type: integer
+          nullable: true
+          description: ID of a valid origin for this content type
+        live:
+          type: boolean
+        important:
+          type: boolean
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+
+    ArticleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+          nullable: true
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+          nullable: true
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the "Blocky" component from the CMS
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryResponse"
+        published_at:
+          type: string
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          description: The last time when the content should be available to the public.
+        published_channels:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChannelResponse"
+        published_regions:
+            type: array
+            items:
+                $ref: "#/components/schemas/RegionResponse"
+        sports_related:
+            $ref: "#/components/schemas/SportsRelatedResponse"
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        origin:
+          $ref: "#/components/schemas/OriginResponse"
+        live:
+          type: boolean
+        important:
+          type: boolean
+        comments:
+          type: object
+          properties:
+            policy:
+              $ref: "#/components/schemas/CommentPolicyResponse"
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResponse"
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ImageResponse"
+            description:
+              type: string
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryResponse"
+        adult_content:
+          type: boolean
+        sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        urls:
+           $ref: "#/components/schemas/Urls"
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        language:
+          type: string
+          description: Language of the resource
+        translation_group:
+            $ref: '#/components/schemas/TranslationGroupResponse'
+
+    TranslationGroupResponse:
+        type: object
+        properties:
+            id:
+                type: string
+            content_type:
+                type: string
+                description: One of article, video, or gallery
+            master_content_id:
+                type: string
+                description: The ID of the resource for which the group was created
+            translations:
+                type: array
+                description: The IDs and languages of the resources assigned to the group
+                items:
+                    $ref: "#/components/schemas/Translation"
+
+    Translation:
+        type: object
+        properties:
+            content_id:
+                type: string
+            language:
+                type: string
+
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        description:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        parent_id:
+          type: string
+          nullable: true
+        weight:
+          type: integer
+          nullable: false
+          readOnly: true
+          description: Read-only element used for ordering in ascending order
+        subs:
+          readOnly: true
+          type: array
+          items:
+            nullable: true
+          description: List of sub categories
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        created_at:
+          readOnly: true
+          type: string
+        updated_at:
+          readOnly: true
+          type: string
+
+    CategoryRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        description:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        parent_id:
+          type: string
+          nullable: true
+        previous_id:
+          type: string
+          nullable: true
+          description: Used to achieve ordering of categories. The current category will be placed after the element with previous_id
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+
+    CreatorPartialResponse:
+        type: object
+        description: Provides basic information about the creator of the content
+        properties:
+            id:
+              type: string
+            full_name:
+              type: string
+
+    Seo:
+      type: object
+      description: JSON object used for SEO needs can be null
+      nullable: true
+      properties:
+        slug:
+          type: string
+          nullable: true
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        keywords:
+          type: array
+          items:
+            type: string
+          nullable: true
+        index:
+          type: boolean
+          description: Flag, indicating whather the item should be indexed by search engines
+          nullable: true
+        follow:
+          type: boolean
+          description: Flag, indicating whather the search engines should follow links on this item
+          nullable: true
+        redirect_type:
+          type: string
+          enum: [temporary, permanent]
+          description: Redirect type for external URLs
+          nullable: true
+        jsonld:
+            type: string
+            description: Json for Linking Data, must be a valid JSON LD value
+            nullable: true
+
+    MainMedia:
+        type: object
+        description: JSON object used to describe the main media resources in an object
+        nullable: true
+        properties:
+            resource_id:
+                type: string
+                nullable: true
+                description: Required for SMP resources (images/videos/galleries).
+            resource_type:
+                type: string
+                nullable: true
+                enum:
+                    - image
+                    - video
+                    - gallery
+                    - widget
+                    - embed
+            resource_subtype:
+                type: string
+                nullable: true
+                description: Has to be valid in combination with the resource type.
+                enum:
+                    - default
+                    - main_image
+                    - vertical_image
+                    - eye_catcher
+                    - odds
+                    - compare_odds
+                    - player_profile
+                    - team_profile
+                    - standings
+                    - match
+                    - fixtures
+                    - top_scorers
+                    - team_players
+            provider:
+                type: string
+                nullable: false
+                enum:
+                    - smp
+                    - external
+            description:
+                type: string
+                nullable: true
+            data:
+                type: object
+                description: Free-form JSON object/array, containing resource's configuration
+                nullable: true
+
+    Urls:
+      type: object
+      description: An object containing various URLs.
+      nullable: true
+      properties:
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+        canonical_url:
+          type: string
+          description: A URL that is the master in case of duplicate content. Mostly used for SEO purposes.
+        public_url_desktop:
+            type: string
+            description: A URL describing the public location of the resource, when accessed from desktop. Can be used in combination with 3rd party Social Media plugins to achieve Share functionality.
+        public_url_mobile:
+            type: string
+            description: A URL describing the public location of the resource, as accessed from mobile.
+        public_url_amp:
+            type: string
+            description: A URL describing the public location of the resource, as accessed as Accellerated Mobile Page.
+
+    VideoFile:
+        type: object
+        description: An object describing a video file. Custom string properties can be added and stored together with the required type and url
+        nullable: false
+        properties:
+            type:
+                type: string
+                description: The type of the video - e.g. preview, h264, live_url - any string value
+                nullable: false
+            url:
+                type: string
+                description: A relative or absolute URL for the current video file
+                nullable: false
+
+    VideoFilesCollection:
+        type: array
+        description: An array containing video files
+        nullable: true
+        items:
+            $ref: "#/components/schemas/VideoFile"
+
+    VideoUrls:
+        type: object
+        description: An object containing various URLs specific for video entities
+        nullable: true
+        properties:
+            video_files:
+                $ref: "#/components/schemas/VideoFilesCollection"
+            live_url:
+                type: string
+                description: URL to be used for live steaming of video.
+            external_url:
+                type: string
+                description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+            canonical_url:
+                type: string
+                description: A URL that is the master in case of duplicate content. Mostly used for SEO purposes.
+            public_url_desktop:
+                type: string
+                description: A URL describing the public location of the resource, when accessed from desktop. Can be used in combination with 3rd party Social Media plugins to achieve Share functionality.
+            public_url_mobile:
+                type: string
+                description: A URL describing the public location of the resource, when accessed from mobile.
+            public_url_amp:
+                type: string
+                description: A URL describing the public location of the resource, when accessed as Accellerated Mobile Page.
+
+    AuthorResponse:
+      type: object
+      description: Author
+      nullable: true
+      properties:
+        name:
+          description: The name of the author. First and last name.
+          type: string
+        bio:
+          description: Brief biography of the author.
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        default:
+          description: Only one author can be default. If a content is created without an author, the default author will be assigned.
+          type: boolean
+        avatar_url:
+          description: Url for the avatar image
+          type: string
+          nullable: true
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        weight:
+          type: string
+          description: Calculated place in the listing. Can be controlled by setting previous_id property in requests.
+
+    AuthorRequest:
+      type: object
+      description: Author
+      nullable: true
+      properties:
+        name:
+          description: The name of the author. First and last name.
+          type: string
+        bio:
+          description: Brief biography of the author.
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        default:
+          description: Only one author can be default. If a content is created without an author, the default author will be assigned.
+          type: boolean
+        avatar_url:
+          description: Url for the avatar image. Can be either absolute Url, or a relative path to SMP Image API. Relative paths will be expanded in a response
+          type: string
+          nullable: true
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        previous_id:
+          type: string
+          nullable: true
+          description: Used to achieve ordering of authors. The current author will be placed after the element with previous_id
+
+    ImageRequest:
+      type: object
+      description: Image Request
+      properties:
+        description:
+          nullable: true
+          type: string
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        footer:
+            type: string
+            description: Content footer.
+            nullable: true
+            maxLength: 1024
+        owner:
+          type: string
+          description: Owner of the rights for the content.
+          deprecated: true
+        type:
+          type: string
+          nullable: true
+          description: Valid slug of a type for this content type
+        image_data:
+          type: string
+          description: Base64 encoded Image
+          deprecated: true
+        urls:
+          type: object
+          description: An object containing various URLs.
+          properties:
+            16x9:
+              type: object
+              description: Object of cropped images
+            copped:
+              type: string
+              description: Link to cropped image
+            uploaded:
+              type: object
+              description: Image links
+              properties:
+                embed:
+                  type: string
+                gallery:
+                  type: string
+                original:
+                  type: string
+                thumbnail:
+                  type: string
+        is_sensitive_content:
+          type: boolean
+        origin_id:
+          type: integer
+          nullable: true
+          description: ID of a valid origin for this content type
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        main_crop:
+          type: string
+          description: Main image crop value
+          nullable: true
+        alt:
+          type: string
+          description: Alt value
+          nullable: true
+        caption:
+          type: string
+          description: Caption value
+          nullable: true
+
+    ImageUpdateRequest:
+      type: object
+      description: Image Update Request
+      properties:
+        description:
+          nullable: true
+          type: string
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        owner:
+          type: string
+          description: Owner of the rights for the content.
+          deprecated: true
+        type:
+          type: string
+          nullable: true
+          description: Valid slug of a type for this content type
+        origin_id:
+          type: integer
+          nullable: true
+          description: ID of a valid origin for this content type
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        main_crop:
+          type: string
+          description: Main image crop value
+          nullable: true
+        alt:
+          type: string
+          description: Alt value
+          nullable: true
+        caption:
+          type: string
+          description: Caption value
+          nullable: true
+
+    ImageResponse:
+      type: object
+      description: Image Response
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        description:
+          nullable: true
+          type: string
+        authors:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResponse"
+        custom_author:
+          type: string
+          description: A field for one-time author
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+        owner:
+          $ref: "#/components/schemas/OriginResponse"
+        origin:
+          $ref: "#/components/schemas/OriginResponse"
+        type:
+          type: string
+          nullable: true
+          description: Valid slug of a type for this content type
+        urls:
+          type: object
+          description: An object containing various URLs.
+          properties:
+            16x9:
+              type: object
+              description: Object of cropped images
+            copped:
+              type: string
+              description: Link to cropped image
+            uploaded:
+              type: object
+              description: Image links
+              properties:
+                embed:
+                  type: string
+                gallery:
+                  type: string
+                original:
+                  type: string
+                thumbnail:
+                  type: string
+        sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        main_crop:
+          type: string
+          description: Main image crop value
+          nullable: true
+        alt:
+          type: string
+          description: Alt value
+          nullable: true
+        caption:
+          type: string
+          description: Caption value
+          nullable: true
+
+    RelatedResponse:
+      type: array
+      items:
+        type: object
+        description: Related Content
+        properties:
+          type:
+            type: string
+            enum:
+            - article
+            - video
+            - gallery
+            - image
+            - tag
+            - content
+            - player
+            - team
+            - match
+            - tournament
+            - championship
+            - round
+            - venue
+            - coach
+            - referee
+            - team_president
+          provider:
+            type: string
+            enum:
+            - undefined
+            - smp
+            - football-api
+          data:
+            type: object
+
+    SportsRelatedResponse:
+        type: array
+        items:
+            type: object
+            description: Related Content reduced to football-api provider
+            properties:
+                type:
+                    type: string
+                    enum:
+                        - player
+                        - team
+                        - match
+                        - tournament
+                        - championship
+                        - round
+                        - venue
+                        - coach
+                        - referee
+                        - team_president
+                provider:
+                    type: string
+                    enum:
+                        - undefined
+                        - smp
+                        - football-api
+                data:
+                    type: object
+
+    RelatedRequest:
+      type: array
+      items:
+        type: object
+        description: Related Content
+        properties:
+          type:
+            type: string
+            enum:
+            - article
+            - video
+            - gallery
+            - image
+            - tag
+            - content
+            - player
+            - team
+            - match
+            - tournament
+            - championship
+            - round
+            - venue
+            - coach
+            - referee
+            - team_president
+          provider:
+            type: string
+            enum:
+            - undefined
+            - smp
+            - football-api
+          data:
+            type: object
+
+    VideoResponse:
+      type: object
+      description: Video
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+        body:
+          type: object
+        authors:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResponse"
+        owner:
+          $ref: "#/components/schemas/OriginResponse"
+        origin:
+            $ref: "#/components/schemas/OriginResponse"
+        run_ads:
+          type: boolean
+        published_at:
+          type: string
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            items:
+                $ref: "#/components/schemas/ChannelResponse"
+        published_regions:
+            type: array
+            items:
+                $ref: "#/components/schemas/RegionResponse"
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        comments:
+            type: object
+            properties:
+                policy:
+                    $ref: "#/components/schemas/CommentPolicyResponse"
+        important:
+            type: boolean
+        custom_author:
+          type: string
+          description: A field for one-time author
+        category:
+          $ref: "#/components/schemas/CategoryResponse"
+        additional_categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryResponse"
+        image:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ImageResponse"
+            description:
+              type: string
+        urls:
+          $ref: "#/components/schemas/VideoUrls"
+        adult_content:
+          type: boolean
+        sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        language:
+          type: string
+          description: Language of the resource
+        translation_group:
+            $ref: '#/components/schemas/TranslationGroupResponse'
+
+    VideoRequest:
+      type: object
+      description: Video
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          nullable: true
+          type: string
+        strapline:
+          nullable: true
+          type: string
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the "Blocky" component from the CMS
+        category_id:
+          type: string
+          description: Category ID
+        comment_policy_id:
+            type: integer
+            nullable: true
+            description: ID of a valid comment policy for this content type
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        owner:
+          type: string
+          description: Owner of the rights for the content.
+          deprecated: true
+        origin_id:
+            type: integer
+            nullable: true
+            description: ID of a valid origin for this content type
+        important:
+            type: boolean
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        run_ads:
+          type: boolean
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        live_url:
+          type: string
+          description: URL to be used for live steaming of video. Deprecaton - use video_files property instead with custom type.
+          nullable: true
+          deprecated: true
+        video_files:
+          $ref: "#/components/schemas/VideoFilesCollection"
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        language:
+          type: string
+          description: Language of the resource. Required if the project is multi-lingual, optional otherwise. Has to be project supported language.
+        translation_group_id:
+            nullable: true
+            type: string
+            description: The ID of an existing translation group
+
+    VideoUpdateRequest:
+      type: object
+      description: Video
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          nullable: true
+          type: string
+        strapline:
+          nullable: true
+          type: string
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the "Blocky" component from the CMS
+        category_id:
+          type: string
+          description: Category ID
+        comment_policy_id:
+            type: integer
+            nullable: true
+            description: ID of a valid comment policy for this content type
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        owner:
+          type: string
+          description: Owner of the rights for the content.
+          deprecated: true
+        origin_id:
+            type: integer
+            nullable: true
+            description: ID of a valid origin for this content type
+        important:
+            type: boolean
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        run_ads:
+          type: boolean
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        live_url:
+          type: string
+          description: URL to be used for live steaming of video. Deprecaton - use video_files property instead with custom type.
+          nullable: true
+          deprecated: true
+        video_files:
+          $ref: "#/components/schemas/VideoFilesCollection"
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+
+    GalleryRequest:
+      type: object
+      description: Gallery
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the \"Blocky\" component from the CMS
+        category_id:
+          type: string
+          description: Category ID
+        comment_policy_id:
+            type: integer
+            nullable: true
+            description: ID of a valid comment policy for this content type
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        origin_id:
+            type: integer
+            nullable: true
+            description: ID of a valid origin for this content type
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID of the entity
+              comment:
+                type: string
+                nullable: true
+              type:
+                type: string
+                enum:
+                - images
+                - videos
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        language:
+          type: string
+          description: Language of the resource. Required if the project is multi-lingual, optional otherwise. Has to be project supported language.
+        translation_group_id:
+            nullable: true
+            type: string
+            description: The ID of an existing translation group
+
+    GalleryUpdateRequest:
+      type: object
+      description: Gallery
+      properties:
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+          maxLength: 1024
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the \"Blocky\" component from the CMS
+        category_id:
+          type: string
+          description: Category ID
+        comment_policy_id:
+            type: integer
+            nullable: true
+            description: ID of a valid comment policy for this content type
+        published_at:
+          type: string
+          nullable: true
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          nullable: true
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        published_regions:
+            type: array
+            nullable: true
+            items:
+                type: integer
+            description: An array of valid IDs for Distribution Channels
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          description: Array of author IDs. If no author is provided upon content creation, we select the default one (if available)
+          items:
+            type: integer
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image_id:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        origin_id:
+            type: integer
+            nullable: true
+            description: ID of a valid origin for this content type
+        image_description:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: string
+          nullable: true
+        additional_categories:
+          nullable: true
+          type: array
+          items:
+            type: integer
+            description: Category ID
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID of the entity
+              comment:
+                type: string
+                nullable: true
+              type:
+                type: string
+                enum:
+                - images
+                - videos
+        is_adult_content:
+          type: boolean
+        is_sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        external_url:
+          type: string
+          description: A URL that is going to be used for redirects. If you want a piece of content to take you to a specific page, you should put that address here.
+          nullable: true
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+
+    GalleryResponse:
+      type: object
+      description: Gallery
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          description: The title of the content. It should always be provided
+        subtitle:
+          type: string
+          description: This is a brief description or a summary of the content.
+        strapline:
+          type: string
+          description: Something that appears before the actual headline. For instance, a headline can be:\"Ronaldo says:\" when the actual title is \"We are a better team than Ajax\". In another use case, can be used as alternative title.
+        footer:
+          type: string
+          description: Content footer.
+          nullable: true
+        body:
+          type: array
+          nullable: true
+          items:
+            type: object
+          description: Body is composed as Array of Json objects generated by the \"Blocky\" component from the CMS
+        category:
+          $ref: "#/components/schemas/CategoryResponse"
+        published_at:
+          type: string
+          description: The first time when the content should appear to the public. If not provided, we use the date in created_at.
+        published_until:
+          type: string
+          description: The last time when the content should be available to the public.
+        published_channels:
+            type: array
+            items:
+                $ref: "#/components/schemas/ChannelResponse"
+        published_regions:
+            type: array
+            items:
+                $ref: "#/components/schemas/RegionResponse"
+        status:
+            type: string
+            nullable: true
+            description: Slug of a valid status for this content type
+        type:
+            type: string
+            nullable: true
+            description: Valid slug of a type for this content type
+        origin:
+            $ref: "#/components/schemas/OriginResponse"
+        comments:
+            type: object
+            properties:
+                policy:
+                    $ref: "#/components/schemas/CommentPolicyResponse"
+        run_ads:
+          type: boolean
+        authors:
+          nullable: true
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResponse"
+        custom_author:
+          type: string
+          description: A field for one-time author
+          nullable: true
+        image:
+          deprecated: true
+          description: Use main_media object to relate images to content
+          type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ImageResponse"
+            description:
+              type: string
+        items:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/ImageResponse"
+              - $ref: "#/components/schemas/VideoResponse"
+        additional_categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryResponse"
+        adult_content:
+          type: boolean
+        sensitive_content:
+          type: boolean
+        generic:
+          type: object
+          description: JSON field with no validation. Should be used for migrated/unsupported content that is no longer needed but needs to be available for legacy reasons.
+          nullable: true
+        urls:
+          $ref: "#/components/schemas/Urls"
+        seo:
+          $ref: "#/components/schemas/Seo"
+        main_media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MainMedia"
+        created_at:
+          type: string
+          description: System field for the creation date and time of the content.
+        updated_at:
+          type: string
+          description: The last time the article was updated.
+        language:
+          type: string
+          description: Language of the resource
+        translation_group:
+            $ref: '#/components/schemas/TranslationGroupResponse'
+
+    BlockyEditorBlock:
+      type: object
+      description: The editor block contains HTML in the "content" attribute. The type tells you what type of HTML to expect. For instance, "paragraph" will contain a "P" element. "Heading" will contain H1, H2, H3, etc elements. The HTML can be used as-is, or it can be decorated to the client's requirements. For instance, a client might want to enclose each paragraph in a DIV, or strip the P tag altogether.
+      properties:
+        data:
+          type: object
+          properties:
+            content:
+              type: string
+              description: HTML string
+            type:
+              type: string
+              enum: [paragraph, quote, heading, table, list]
+              description: Block type
+        type:
+          type: string
+          example: editor_block
+          description: Block type
+
+    IdMapping:
+        type: object
+        properties:
+            content_id:
+                type: string
+                nullable: false
+                description: The ID of the record in Content API
+            content_type:
+                type: string
+                nullable: false
+                enum:
+                    - article
+                    - video
+                    - gallery
+                    - image
+                    - tag
+                    - category
+                    - banner
+                    - list
+                    - poll
+                    - author
+                    - type
+                    - status
+                    - region
+            source_name:
+                type: string
+                nullable: false
+                description: The name or alias of the external source system.
+            source_type:
+                type: boolean
+                nullable: false
+                description: Content type, as defined in source system.
+            source_id:
+                type: string
+                nullable: false
+                description: Content ID, as present in source system.
+
+    IdMappingCollection:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/IdMapping"
+            meta:
+                $ref: "#/components/schemas/Meta"
+
+    BlockyImageBlock:
+      type: object
+      description: Image blocks contain image ID and description. This description is available only in the context of this image in this content. The same image might have different descriptions depending on the content it's embedded in.
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Image ID
+            description:
+              type: string
+              description: Image description - for the Current ARTICLE
+#          preview:
+#            type: object
+#            properties:
+#              alignment:
+#                type: string
+#              width:
+#                type: string
+        type:
+          type: string
+          example: image
+          description: Block type
+
+    BlockyGalleryBlock:
+      type: object
+      description: Gallery block contains ID and main_image_id. ID refers to the ID of the gallery, while main_image_id refers to the image to be displayed. The same gallery can be embedded different times using different main images.
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Gallery ID
+            main_image_id:
+              type: string
+              description: Image ID
+            preview:
+              type: object
+              properties:
+                alignment:
+                  type: string
+                width:
+                  type: string
+                mainImageId:
+                  type: string
+                mainImageUrl:
+                  type: string
+                title:
+                  type: string
+        type:
+          type: string
+          example: gallery
+          description: Block type
+
+    BlockyVideoBlock:
+      type: object
+      description: Video block contains only the ID of the content.
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Video ID
+        type:
+          type: string
+          example: video
+          description: Block type
+
+    BlockyArticleBlock:
+      type: object
+      description: Article block contains only the ID of the content.
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Article ID
+        type:
+          type: string
+          example: article
+          description: Block type
+
+    BlockySMPWidgetBlock:
+      type: object
+      description: This type of block contains SMP widgets. In the data, you will find the "content" attribute, which can be used as-is if you want to build the widget as well as the "widget type", while "config" contains all JSON required to build the widget from scratch.
+      properties:
+        data:
+          type: object
+          properties:
+            content:
+              type: string
+              description: HTML div ready to be parsed by Widget loader
+            widget_type:
+              type: string
+              enum: [widgetOdds, compareOdds, playerProfile, teamProfile, standings, widgetPolls, widgetMatch, widgetFixtures, widgetTopScorers, teamPlayers, widgetPlayerH2H]
+            config:
+              type: object
+              properties:
+                options:
+                  type: object
+                widgetId:
+                  type: string
+            preview:
+              type: object
+              properties:
+                mainBookMaker:
+                  type: object
+                match:
+                  type: object
+                matches:
+                  type: object
+                player:
+                  type: object
+                properties:
+                  type: object
+                selectedBookmakers:
+                  type: object
+                team:
+                  type: object
+                tournament:
+                  type: object
+        type:
+          type: string
+          example: widget_smp
+          description: Block type
+
+    BlockyEmbeddedWidgetBlock:
+      type: object
+      description: This block contains raw HTML to be printed on the page.
+      properties:
+        data:
+          type: object
+          properties:
+            content:
+              type: string
+              description: HTML
+            embed_type:
+              type: string
+              description: The source type of the embed code
+        type:
+          type: string
+          example: embed
+          description: Block type
+
+    BlockyLinkBlock:
+      type: object
+      description: This block contains raw HTML to be printed on the page
+      properties:
+        data:
+          type: object
+          properties:
+            content:
+              type: string
+              description: HTML
+            text:
+              type: string
+            open_type:
+              type: string
+              example: "NEW_WINDOW"
+            link:
+              type: string
+        type:
+          type: string
+          example: link
+          description: Block type
+
+    BlockyBannerBlock:
+      type: object
+      description: Banner block. Contains on the ID of the content
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+        type:
+          type: string
+          example: banner
+
+    BlockyHighlightBlock:
+      type: object
+      description: This block contains the title and description of the highlight
+      properties:
+        data:
+          type: object
+          properties:
+            title:
+              type: string
+            description:
+              type: string
+            open_type:
+              type: string
+        type:
+          type: string
+          example: highlight
+          description: Block type
+security:
+  - oAuth2: []
+  - Project: []
+
+tags:
+  - name: Image
+  - name: Categories
+  - name: Videos
+  - name: Authors
+  - name: Articles
+  - name: Galleries
+  - name: Lists
+  - name: Tags
+
+paths:
+
+  /images:
+    get:
+      tags:
+        - Image
+      summary: List of all images
+      description: List of all available images
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagesCollection'
+
+    post:
+      tags:
+        - Image
+      summary: Upload Image
+      requestBody:
+        description: Upload Image
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageRequest'
+      responses:
+        201:
+          description: Accepted
+
+  /images/{id}:
+    get:
+      tags:
+        - Image
+      summary: Get Single Image
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Image Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResponse'
+
+    patch:
+      tags:
+        - Image
+      summary: Update Image metadata
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Change Uploaded Image
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageUpdateRequest'
+      responses:
+        200:
+          description: Updated Image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResponse'
+
+  /images/{id}/related:
+    get:
+      tags:
+        - Image
+      summary: Get Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Image Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+    post:
+      tags:
+        - Image
+      summary: Add Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Add related content.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedRequest'
+      responses:
+        200:
+          description: Image Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+  /images/search:
+    get:
+      tags:
+        - Image
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+          default: "*"
+        required: true
+        description: Search string
+      - in: query
+        name: ids
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+      - in: query
+        name: createdBy
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of admin
+      - in: query
+        name: originId
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of images origin
+      - in: query
+        name: type
+        schema:
+            type: string
+            default: "eyecatcher"
+        required: false
+        description: Valid slug of image type
+      - in: query
+        name: publishedChannels
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content channel IDs
+      - in: query
+        name: publishedRegions
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content region IDs
+      - in: query
+        name: teamIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Team IDs
+      - in: query
+        name: playerIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Player IDs
+      - in: query
+        name: tagIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Tag IDs
+      - in: query
+        name: matchId
+        schema:
+          type: integer
+          default: 1
+        description: Match ID
+      - in: query
+        name: tournamentId
+        deprecated: true
+        schema:
+          type: integer
+          default: 1
+        description: Tournament ID
+      - in: query
+        name: tournamentIds
+        schema:
+            type: string
+            default: "1,2,3"
+      - in: query
+        name: championshipId
+        schema:
+          type: integer
+          default: 1
+        description: Championship ID
+      - in: query
+        name: roundId
+        schema:
+          type: integer
+          default: 1
+        description: Round ID
+      - in: query
+        name: limit
+        schema:
+            type: integer
+            default: 20
+            maximum: 200
+        required: false
+        description: Items per page
+
+
+      responses:
+        200:
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagesCollection'
+
+  /categories:
+    get:
+      tags:
+      - Categories
+      summary: List of all categories
+      description: List of all categories
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: sort[]
+          schema:
+            type: string
+            default: created_at:desc
+          required: false
+          description: Sort
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoriesCollection'
+
+    post:
+      tags:
+        - Categories
+      summary: Add Category
+      requestBody:
+        description: Add Category. Category title is unique.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+  /categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get Single Category
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Category Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CategoryResponse'
+
+    patch:
+      tags:
+        - Categories
+      summary: Update Category. Category title is unique.
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Category
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        200:
+          description: Updated Category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CategoryResponse'
+
+    delete:
+      tags:
+        - Categories
+      summary: Delete Category.
+      description: Category cannot be deleted until all content is moved to antoher category (move-content).
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Category Deleted
+
+#  /categories/{id}/move-content/{newCategoryId}:
+#    post:
+#      tags:
+#        - Categories
+#      summary: Move all content to another category.
+#      description: Move all content to another category.
+#      parameters:
+#        - in: path
+#          required: true
+#          name: id
+#          schema:
+#            type: integer
+#            format: int64
+#        - in: path
+#          required: true
+#          name: newCategoryId
+#          schema:
+#            type: integer
+#            format: int64
+#      responses:
+#        200:
+#          description: All records are moved
+
+  /videos:
+    get:
+      tags:
+      - Videos
+      summary: List of all videos
+      description: List of all videos
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: sort[]
+          schema:
+            type: string
+            default: created_at:desc
+          required: false
+          description: Sort
+      responses:
+        200:
+          description: Collection of Videos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideosCollection'
+
+    post:
+      tags:
+        - Videos
+      summary: Add Video
+      requestBody:
+        description: Add Video
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoResponse'
+
+  /videos/{id}:
+    get:
+      tags:
+        - Videos
+      summary: Get Single Video
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Video
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VideoResponse'
+
+    patch:
+      tags:
+        - Videos
+      summary: Update Video
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Video
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoUpdateRequest'
+      responses:
+        200:
+          description: Updated Video
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VideoResponse'
+
+    delete:
+      tags:
+        - Videos
+      summary: Delete Video.
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Video Deleted
+
+  /videos/{id}/related:
+    get:
+      tags:
+        - Videos
+      summary: Get Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Related Content.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+    post:
+      tags:
+        - Videos
+      summary: Add Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Add related content
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedRequest'
+      responses:
+        200:
+          description: Related Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+  /videos/search:
+    get:
+      tags:
+        - Videos
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+          default: "*"
+        required: true
+        description: Search string
+      - in: query
+        name: ids
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+      - in: query
+        name: category
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of category
+      - in: query
+        name: createdBy
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of admin
+      - in: query
+        name: originId
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of video origin
+      - in: query
+        name: status
+        schema:
+            type: string
+            default: "active"
+        required: false
+        description: Valid slug of video status
+      - in: query
+        name: type
+        schema:
+            type: string
+            default: "news"
+        required: false
+        description: Valid slug of video type
+      - in: query
+        name: publishedChannels
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content channel IDs
+      - in: query
+        name: publishedRegions
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content region IDs
+      - in: query
+        name: teamIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Team IDs
+      - in: query
+        name: playerIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Player IDs
+      - in: query
+        name: tagIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Tag IDs
+      - in: query
+        name: matchId
+        schema:
+          type: integer
+          default: 1
+        description: Match ID
+      - in: query
+        name: tournamentId
+        deprecated: true
+        schema:
+          type: integer
+          default: 1
+        description: Tournament ID
+      - in: query
+        name: tournamentIds
+        schema:
+            type: string
+            default: "1,2,3"
+      - in: query
+        name: championshipId
+        schema:
+          type: integer
+          default: 1
+        description: Championship ID
+      - in: query
+        name: roundId
+        schema:
+          type: integer
+          default: 1
+        description: Round ID
+      - in: query
+        name: language
+        schema:
+          type: string
+        description: Filter by language
+      - in: query
+        name: categoryTreeId
+        schema:
+          type: integer
+          default: 1
+        description: Category tree ID. Performs search by parent and sub category IDs. Cannot be used together with category parameter.
+      - in: query
+        name: authorIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of author IDs
+      - in: query
+        name: limit
+        schema:
+            type: integer
+            default: 20
+            maximum: 200
+        required: false
+        description: Items per page
+
+
+      responses:
+        200:
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticlesCollection'
+
+  /authors:
+    get:
+      tags:
+      - Authors
+      summary: List of all authors
+      description: List of all authors
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+      responses:
+        200:
+          description: Collection of Authors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorsCollection'
+
+    post:
+      tags:
+        - Authors
+      summary: Add Author
+      requestBody:
+        description: Add Author
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+
+  /authors/{id}:
+    get:
+      tags:
+        - Authors
+      summary: Get Single Author
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AuthorResponse'
+
+    patch:
+      tags:
+        - Authors
+      summary: Update Author
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Author
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        200:
+          description: Updated Author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AuthorResponse'
+
+    delete:
+      tags:
+        - Authors
+      summary: Delete Author
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Author Deleted
+
+  /articles:
+    get:
+      tags:
+      - Articles
+      summary: List of all articles
+      description: List of all articles
+      parameters:
+        - in: query
+          name: optional_data
+          required: false
+          schema:
+            type: string
+            enum:
+                - sports_related
+          description: Get sports_related data
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: sort[]
+          schema:
+            type: string
+            default: created_at:desc
+          required: false
+          description: Sort
+      responses:
+        200:
+          description: Collection of Articles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticlesCollection'
+
+    post:
+      tags:
+        - Articles
+      summary: Add Article
+      requestBody:
+        description: Add Article
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleRequest'
+      responses:
+        200:
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponse'
+
+  /articles/{id}:
+    get:
+      tags:
+        - Articles
+      summary: Get Single Article
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ArticleResponse'
+
+    patch:
+      tags:
+        - Articles
+      summary: Update Article
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Article
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleUpdateRequest'
+      responses:
+        200:
+          description: Updated Article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ArticleResponse'
+
+    delete:
+      tags:
+        - Articles
+      summary: Delete Article
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Article Deleted
+
+  /articles/{id}/related:
+    get:
+      tags:
+        - Articles
+      summary: Get Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Related Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+    post:
+      tags:
+        - Articles
+      summary: Add Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Add related content
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedRequest'
+      responses:
+        200:
+          description: Related Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+  /articles/search:
+    get:
+      tags:
+        - Articles
+      parameters:
+      - in: query
+        name: optional_data
+        required: false
+        schema:
+            type: string
+            enum:
+                - sports_related
+        description: Get sports_related data
+      - in: query
+        name: query
+        schema:
+          type: string
+          default: "*"
+        required: true
+        description: Search string
+      - in: query
+        name: ids
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+      - in: query
+        name: category
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of category
+      - in: query
+        name: createdBy
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of admin
+      - in: query
+        name: originId
+        schema:
+            type: integer
+            default: 2
+        required: false
+        description: Valid ID of article origin
+      - in: query
+        name: status
+        schema:
+            type: string
+            default: "active"
+        required: false
+        description: Valid slug of article status
+      - in: query
+        name: type
+        schema:
+            type: string
+            default: "news"
+        required: false
+        description: Valid slug of article type
+      - in: query
+        name: publishedChannels
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content channel IDs
+      - in: query
+        name: publishedRegions
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content region IDs
+      - in: query
+        name: teamIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Team IDs
+      - in: query
+        name: playerIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Player IDs
+      - in: query
+        name: tagIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of Tag IDs
+      - in: query
+        name: matchId
+        schema:
+          type: integer
+          default: 1
+        description: Match ID
+      - in: query
+        name: tournamentId
+        deprecated: true
+        schema:
+          type: integer
+          default: 1
+        description: Tournament ID
+      - in: query
+        name: tournamentIds
+        schema:
+            type: string
+            default: "1,2,3"
+      - in: query
+        name: championshipId
+        schema:
+          type: integer
+          default: 1
+        description: Championship ID
+      - in: query
+        name: roundId
+        schema:
+          type: integer
+          default: 1
+        description: Round ID
+      - in: query
+        name: language
+        schema:
+            type: string
+        description: Filter by language
+      - in: query
+        name: categoryTreeId
+        schema:
+          type: integer
+          default: 1
+        description: Category tree ID. Performs search by parent and sub category IDs. Cannot be used together with category parameter.
+      - in: query
+        name: authorIds
+        schema:
+          type: string
+          default: "1,2,3"
+        description: CSV of author IDs
+      - in: query
+        name: limit
+        schema:
+            type: integer
+            default: 20
+            maximum: 200
+        required: false
+        description: Items per page
+
+
+      responses:
+        200:
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticlesCollection'
+
+  /galleries:
+    get:
+      tags:
+      - Galleries
+      summary: List of all galleries
+      description: List of all galleries
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: sort[]
+          schema:
+            type: string
+            default: created_at:desc
+          required: false
+          description: Sort
+      responses:
+        200:
+          description: Collection of Galleries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GalleriesCollection'
+
+    post:
+      tags:
+        - Galleries
+      summary: Add Gallery
+      requestBody:
+        description: Add Gallery
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GalleryRequest'
+      responses:
+        200:
+          description: Gallery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GalleryResponse'
+
+  /galleries/{id}:
+    get:
+      tags:
+        - Galleries
+      summary: Get Single Gallery
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Gallery
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GalleryResponse'
+
+    patch:
+      tags:
+        - Galleries
+      summary: Update Gallery
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Gallery
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GalleryUpdateRequest'
+      responses:
+        200:
+          description: Updated Gallery
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GalleryResponse'
+
+    delete:
+      tags:
+        - Galleries
+      summary: Delete Gallery
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Gallery Deleted
+
+  /galleries/{id}/related:
+    get:
+      tags:
+        - Galleries
+      summary: Get Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Related Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+    post:
+      tags:
+        - Galleries
+      summary: Add Related Content
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Add related content
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedRequest'
+      responses:
+        200:
+          description: Related Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedResponse'
+
+
+  /galleries/search:
+    get:
+      tags:
+        - Galleries
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+            default: "*"
+          required: true
+          description: Search string
+        - in: query
+          name: ids
+          schema:
+              type: string
+              default: "1,2,3"
+          required: false
+          description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+        - in: query
+          name: category
+          schema:
+            type: integer
+            default: 2
+          required: false
+          description: Valid ID of category
+        - in: query
+          name: createdBy
+          schema:
+            type: integer
+            default: 2
+          required: false
+          description: Valid ID of admin
+        - in: query
+          name: originId
+          schema:
+            type: integer
+            default: 2
+          required: false
+          description: Valid ID of gallery origin
+        - in: query
+          name: status
+          schema:
+            type: string
+            default: "active"
+          required: false
+          description: Valid slug of gallery status
+        - in: query
+          name: type
+          schema:
+            type: string
+            default: "news"
+          required: false
+          description: Valid slug of gallery type
+        - in: query
+          name: publishedChannels
+          schema:
+            type: string
+            default: "1,2,3"
+          required: false
+          description: CSV of valid content channel IDs
+        - in: query
+          name: publishedRegions
+          schema:
+            type: string
+            default: "1,2,3"
+          required: false
+          description: CSV of valid content region IDs
+        - in: query
+          name: teamIds
+          schema:
+            type: string
+            default: "1,2,3"
+          description: CSV of Team IDs
+        - in: query
+          name: playerIds
+          schema:
+            type: string
+            default: "1,2,3"
+          description: CSV of Player IDs
+        - in: query
+          name: tagIds
+          schema:
+            type: string
+            default: "1,2,3"
+          description: CSV of Tag IDs
+        - in: query
+          name: matchId
+          schema:
+            type: integer
+            default: 1
+          description: Match ID
+        - in: query
+          name: tournamentId
+          deprecated: true
+          schema:
+            type: integer
+            default: 1
+          description: Tournament ID
+        - in: query
+          name: tournamentIds
+          schema:
+              type: string
+              default: "1,2,3"
+        - in: query
+          name: championshipId
+          schema:
+            type: integer
+            default: 1
+          description: Championship ID
+        - in: query
+          name: roundId
+          schema:
+            type: integer
+            default: 1
+          description: Round ID
+        - in: query
+          name: language
+          schema:
+            type: string
+          description: Filter by language
+        - in: query
+          name: categoryTreeId
+          schema:
+            type: integer
+            default: 1
+          description: Category tree ID. Performs search by parent and sub category IDs. Cannot be used together with category parameter.
+        - in: query
+          name: authorIds
+          schema:
+            type: string
+            default: "1,2,3"
+          description: CSV of author IDs
+        - in: query
+          name: limit
+          schema:
+              type: integer
+              default: 20
+              maximum: 200
+          required: false
+          description: Items per page
+
+      responses:
+        200:
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GalleriesCollection'
+
+  /lists:
+    get:
+      tags:
+      - Lists
+      summary: List of all Lists
+      description: List of all Lists
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: sort[]
+          schema:
+            type: string
+            default: created_at:desc
+          required: false
+          description: Sort
+      responses:
+        200:
+          description: Collection of Lists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListsCollection'
+
+    post:
+      tags:
+        - Lists
+      summary: Add List
+      requestBody:
+        description: Add List
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListsRequest'
+      responses:
+        200:
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListsResponse'
+
+  /lists/{id}:
+    get:
+      tags:
+        - Lists
+      summary: Get Single List
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: List
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ListsResponse'
+
+    patch:
+      tags:
+        - Lists
+      summary: Update List
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update List
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListsUpdateRequest'
+      responses:
+        200:
+          description: Updated List
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ListsResponse'
+
+    delete:
+      tags:
+        - Lists
+      summary: Delete List.
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: List Deleted
+
+  /lists/search:
+      get:
+          tags:
+              - Lists
+          parameters:
+              - in: query
+                name: query
+                schema:
+                    type: string
+                    default: "*"
+                required: true
+                description: Search string
+              - in: query
+                name: ids
+                schema:
+                    type: string
+                    default: "1,2,3"
+                required: false
+                description: CSV of valid list IDs. OR filter. List ID is 1 or 2 or 3
+              - in: query
+                name: itemIds
+                schema:
+                    type: string
+                    default: "1,2,3"
+                required: false
+                description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+              - in: query
+                name: createdBy
+                schema:
+                    type: integer
+                    default: 2
+                required: false
+                description: Valid ID of admin
+              - in: query
+                name: status
+                schema:
+                    type: string
+                    default: "active"
+                required: false
+                description: Valid slug of list status
+              - in: query
+                name: language
+                schema:
+                    type: string
+                description: Filter by language
+              - in: query
+                name: limit
+                schema:
+                    type: integer
+                    default: 20
+                    maximum: 200
+                required: false
+                description: Items per page
+
+          responses:
+              200:
+                  description: Results
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/ListsCollection'
+
+  /tags:
+    get:
+      tags:
+      - Tags
+      summary: List of all Tags
+      description: List of all Tags
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: Pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+          required: false
+          description: Items per page
+        - in: query
+          name: order_type
+          schema:
+              type: string
+              enum:
+                  - ordered
+                  - unordered
+          required: false
+          description: Filter tags by order type
+      responses:
+        200:
+          description: Collection of Tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsCollection'
+
+    post:
+      tags:
+        - Tags
+      summary: Add Tag
+      requestBody:
+        description: Add Tag
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsRequest'
+      responses:
+        200:
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+
+  /tags/{id}:
+    get:
+      tags:
+        - Tags
+      summary: Get Single Tag
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Tag
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagsResponse'
+
+    patch:
+      tags:
+        - Tags
+      summary: Update Tag
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update Tag
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsRequest'
+      responses:
+        200:
+          description: Updated Tag
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagsResponse'
+
+    delete:
+      tags:
+        - Tags
+      summary: Delete Tag.
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Tag Deleted
+
+  /tags/search:
+    get:
+      tags:
+        - Tags
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+          default: "*"
+        required: true
+        description: Search string
+      - in: query
+        name: ids
+        schema:
+            type: string
+            default: "1,2,3"
+        required: false
+        description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+      - in: query
+        name: limit
+        schema:
+            type: integer
+            default: 20
+            maximum: 200
+        required: false
+        description: Items per page
+      - in: query
+        name: order_type
+        schema:
+            type: string
+            enum:
+                - ordered
+                - unordered
+        required: false
+        description: Filter tags by order type
+      responses:
+        200:
+          description: Results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsCollection'
+
+  /banners/:
+      get:
+          tags:
+              - Banners
+          summary: List of all Banners
+          description: List of all Banners
+          parameters:
+              - in: query
+                name: page
+                schema:
+                    type: integer
+                    default: 1
+                required: false
+                description: Pagination
+              -   in: query
+                  name: limit
+                  schema:
+                    type: integer
+                    default: 20
+                    maximum: 200
+                  required: false
+                  description: Items per page
+          responses:
+              200:
+                  description: Collection of Banners
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/BannersCollection'
+
+      post:
+          tags:
+              - Banners
+          summary: Add Banner
+          requestBody:
+              description: Add Banner
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/BannersRequest'
+          responses:
+              200:
+                  description: Banners
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/BannersResponse'
+
+  /banners/{id}:
+      get:
+          tags:
+              - Banners
+          summary: Get Single Banner
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Banner
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/BannersResponse'
+
+      patch:
+          tags:
+              - Banners
+          summary: Update Banner
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Banner
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/BannersRequest'
+          responses:
+              200:
+                  description: Updated Banner
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/BannersResponse'
+
+      delete:
+          tags:
+              - Banners
+          summary: Delete Banner.
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Banner Deleted
+
+  /banners/search:
+      get:
+          tags:
+              - Banners
+          parameters:
+              - in: query
+                name: query
+                schema:
+                    type: string
+                    default: "*"
+                required: true
+                description: Search string
+              - in: query
+                name: ids
+                schema:
+                    type: string
+                    default: "1,2,3"
+                required: false
+                description: CSV of valid content IDs. OR filter. Content ID is 1 or 2 or 3
+              - in: query
+                name: type
+                schema:
+                    type: string
+                    default: "static-html"
+                required: false
+                description: Valid slug of banner type
+              - in: query
+                name: limit
+                schema:
+                    type: integer
+                    default: 20
+                    maximum: 200
+                required: false
+                description: Items per page
+          responses:
+              200:
+                  description: Results
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/BannersCollection'
+
+
+  /distribution/regions:
+      get:
+          tags:
+              - Distribution
+          responses:
+              200:
+                  description: All available regions for this project
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/RegionsCollection'
+
+      post:
+          tags:
+              - Distribution
+          summary: Add Region
+          requestBody:
+              description: Add Region
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/RegionRequest'
+          responses:
+              200:
+                  description: Region
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/RegionResponse'
+
+  /distribution/regions/{id}:
+      get:
+          tags:
+              - Distribution
+          summary: Get Single Region
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Region
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/RegionResponse'
+
+      patch:
+          tags:
+              - Distribution
+          summary: Update a Region
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Region
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/RegionRequest'
+          responses:
+              200:
+                  description: Updated Region
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/RegionResponse'
+
+      delete:
+          tags:
+              - Distribution
+          summary: Delete Region
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Region Deleted
+              404:
+                  description: Region not found
+
+  /distribution/channels:
+      get:
+          tags:
+              - Distribution
+          responses:
+              200:
+                  description: All available channels for this project
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/ChannelsCollection'
+
+      post:
+          tags:
+              - Distribution
+          summary: Add Channel
+          requestBody:
+              description: Add Channel
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/ChannelRequest'
+          responses:
+              200:
+                  description: Channel
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/ChannelResponse'
+
+  /distribution/channels/{id}:
+      get:
+          tags:
+              - Distribution
+          summary: Get Single Channel
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Channel
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/ChannelResponse'
+
+      patch:
+          tags:
+              - Distribution
+          summary: Update a Channel
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Channel
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/ChannelRequest'
+          responses:
+              200:
+                  description: Updated Channel
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/ChannelResponse'
+
+      delete:
+          tags:
+              - Distribution
+          summary: Delete Channel
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Channel Deleted
+              404:
+                  description: Channel not found
+
+  /{contentType}/statuses:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - polls
+                      - lists
+                      - galleries
+      get:
+          tags:
+              - Content Statuses
+          responses:
+              200:
+                  description: All available statuses, scoped percontent type
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/StatusesCollection'
+      post:
+          tags:
+              - Content Statuses
+          summary: Add Status for content type
+          requestBody:
+              description: Add Status
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/StatusRequest'
+          responses:
+              200:
+                  description: Status
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/StatusResponse'
+
+  /{contentType}/statuses/{id}:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - polls
+                      - lists
+                      - galleries
+      get:
+          tags:
+              - Content Statuses
+          summary: Get Single Status
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Status
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/StatusResponse'
+      patch:
+          tags:
+              - Content Statuses
+          summary: Update a Status
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Status
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/StatusRequest'
+          responses:
+              200:
+                  description: Updated Status
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/StatusResponse'
+
+#      delete:
+#          tags:
+#              - Content Statuses
+#          summary: Delete Status
+#          parameters:
+#              - in: path
+#                required: true
+#                name: id
+#                schema:
+#                    type: integer
+#                    format: int64
+#          responses:
+#              200:
+#                  description: Status Deleted
+#              404:
+#                  description: Status not found
+
+  /{contentType}/types:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - images
+                      - tags
+                      - lists
+                      - galleries
+                      - banners
+      get:
+          tags:
+              - Content Types
+          responses:
+              200:
+                  description: All available types, scoped per content type
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/TypesCollection'
+      post:
+          tags:
+              - Content Types
+          summary: Add Type for content type
+          requestBody:
+              description: Add Type
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/TypeRequest'
+          responses:
+              200:
+                  description: Type
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/TypeResponse'
+
+  /{contentType}/types/{id}:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - images
+                      - tags
+                      - lists
+                      - galleries
+                      - banners
+      get:
+          tags:
+              - Content Types
+          summary: Get Single Type
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Type
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/TypeResponse'
+      patch:
+          tags:
+              - Content Types
+          summary: Update a Type
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Type
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/TypeRequest'
+          responses:
+              200:
+                  description: Updated Type
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/TypeResponse'
+
+#      delete:
+#          tags:
+#              - Content Types
+#          summary: Delete Type
+#          parameters:
+#              - in: path
+#                required: true
+#                name: id
+#                schema:
+#                    type: integer
+#                    format: int64
+#          responses:
+#              200:
+#                  description: Type Deleted
+#              404:
+#                  description: Type not found
+
+  /{contentType}/origins:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - images
+                      - galleries
+      get:
+          tags:
+              - Content Origins
+          responses:
+              200:
+                  description: All available origins, scoped per content type
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/OriginsCollection'
+      post:
+          tags:
+              - Content Origins
+          summary: Add Origin for content type
+          requestBody:
+              description: Add Origin
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/OriginRequest'
+          responses:
+              200:
+                  description: Origin
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/OriginResponse'
+
+  /{contentType}/origins/{id}:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - images
+                      - galleries
+      get:
+          tags:
+              - Content Origins
+          summary: Get Single Origin
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Origin
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/OriginResponse'
+
+      patch:
+          tags:
+              - Content Origins
+          summary: Update an Origin
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Origin
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/OriginRequest'
+          responses:
+              200:
+                  description: Updated Origin
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/OriginResponse'
+#
+#      delete:
+#          tags:
+#              - Content Origins
+#          summary: Delete Origin
+#          parameters:
+#              - in: path
+#                required: true
+#                name: id
+#                schema:
+#                    type: integer
+#                    format: int64
+#          responses:
+#              200:
+#                  description: Origin Deleted
+#              404:
+#                  description: Origin not found
+
+  /{contentType}/comments/policies:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - polls
+                      - galleries
+      get:
+          tags:
+              - Comment Policies
+          responses:
+              200:
+                  description: All available comment policies, scoped per this content type
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/CommentPoliciesCollection'
+      post:
+          tags:
+              - Comment Policies
+          summary: Add Comment Policy for content type
+          requestBody:
+              description: Add Comment Policy
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/CommentPolicyRequest'
+          responses:
+              200:
+                  description: Comment Policy
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/CommentPolicyResponse'
+
+  /{contentType}/comments/policies/{id}:
+      parameters:
+          -   in: path
+              required: true
+              name: contentType
+              schema:
+                  type: string
+                  enum:
+                      - articles
+                      - videos
+                      - polls
+                      - galleries
+      get:
+          tags:
+              - Comment Policies
+          summary: Get Single Comment Policy
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: CommentPolicy
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/CommentPolicyResponse'
+
+      patch:
+          tags:
+              - Comment Policies
+          summary: Update a Comment Policy
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          requestBody:
+              description: Update Comment Policy
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/CommentPolicyRequest'
+          responses:
+              200:
+                  description: Updated Comment Policy
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/CommentPolicyResponse'
+
+      delete:
+          tags:
+              - Comment Policies
+          summary: Delete Comment Policy
+          parameters:
+              - in: path
+                required: true
+                name: id
+                schema:
+                    type: integer
+                    format: int64
+          responses:
+              200:
+                  description: Comment Policy Deleted
+              404:
+                  description: Comment Policy not found
+
+  /mappings:
+      description: Used to maintain ID mapping between Content API and external source systems
+      get:
+          tags:
+              - Miscellaneous
+          summary: Get ID mappings according to various filters
+          parameters:
+              -   in: query
+                  required: false
+                  name: content_id
+                  schema:
+                      type: string
+                      description: Comma separated list of IDs for records in Content ID
+              -   in: query
+                  required: false
+                  name: content_type
+                  schema:
+                      type: string
+                      enum:
+                          - article
+                          - video
+                          - gallery
+                          - image
+                          - tag
+                          - category
+                          - banner
+                          - list
+                          - poll
+                          - author
+                          - type
+                          - status
+                          - region
+                          - custom
+              -   in: query
+                  required: false
+                  name: source_name
+                  schema:
+                      type: string
+                      description: The name of the source system that this mapping applies
+                      default: "AFP"
+              -   in: query
+                  required: false
+                  name: source_type
+                  schema:
+                      type: string
+                      description: The type of the content, as in source system
+                      default: "newsarticle"
+              -   in: query
+                  required: false
+                  name: source_id
+                  schema:
+                      type: string
+                      description: Comma Separated List of IDs in external source systems
+                      default: "afp123"
+          responses:
+              200:
+                  description: ID Mapping
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                  data:
+                                      $ref: '#/components/schemas/IdMappingCollection'
+
+      put:
+          tags:
+              - Miscellaneous
+          summary: Add or replace ID Mapping entry. The unique identificator of ID Mapping is content_id/content_type key
+          requestBody:
+              description: Add ID Mapping entry
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/IdMapping'
+          responses:
+              200:
+                  description: ID Mapping
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/IdMapping'
+
+      delete:
+          tags:
+              - Miscellaneous
+          summary: Delete ID Mapping by content_id/content_type key
+          parameters:
+              -   in: query
+                  required: true
+                  name: content_id
+                  schema:
+                      type: string
+              -   in: query
+                  required: true
+                  name: content_type
+                  schema:
+                      type: string
+          responses:
+              200:
+                  description: ID Mapping Deleted
+              404:
+                  description: ID Mapping not found
+
+  /action/logs/content:
+    get:
+      tags:
+      - Action logs
+      summary: List all action logs for specific resource
+      description: List all action logs for specific resource
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+            default: 1
+          required: true
+          description: Valid project
+        - in: query
+          name: content_type
+          schema:
+            type: string
+            enum: [Article, Category, Gallery, Image, Video, Lists, Banner, Tag, Author, Poll, PollOption]
+            default: Article
+          required: true
+          description: Resource type
+        - in: query
+          name: content_id
+          schema:
+              type: integer
+              default: 1
+          required: true
+          description: Resource ID
+      responses:
+        200:
+          description: Collection of action logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionLogsCollection'
+
+  /action/logs/admin:
+    get:
+      tags:
+      - Action logs
+      summary: List all action logs for specific admin
+      description: List all action logs for specific admin
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+            default: 1
+          required: true
+          description: Valid project
+        - in: query
+          name: admin_id
+          schema:
+              type: integer
+              default: 1
+          required: true
+          description: Admin ID
+        - in: query
+          name: content_type
+          schema:
+            type: string
+            enum: [Article, Category, Gallery, Image, Video, Lists, Banner, Tag, Author, Poll, PollOption]
+            default: Article
+          required: false
+          description: Resource type
+        - in: query
+          name: action
+          schema:
+              type: string
+              enum: [create, update, delete]
+              default: create
+          required: false
+          description: Action
+      responses:
+        200:
+          description: Collection of action logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionLogsCollection'
