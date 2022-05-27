@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ES2022",
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "Node",
+    "lib": ["dom", "es2018"]
+  },
+  "exclude": [],
+}
